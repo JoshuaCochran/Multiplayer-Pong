@@ -127,7 +127,7 @@ Menu::MenuResult Menu::HandleClick(int x, int y)
 Menu::MenuResult Menu::GetMenuResponse(sf::RenderWindow& window)
 {
 	sf::Event menuEvent;
-	
+
 	//Polls for user input
 	while (window.pollEvent(menuEvent))
 	{
