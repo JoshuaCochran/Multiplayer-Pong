@@ -59,6 +59,7 @@ int main(int argc, char* argv[])
 
 	bool isExiting = false;
 
+	//Game loop
 	while (!isExiting)
 	{
 		switch (_gameState)
