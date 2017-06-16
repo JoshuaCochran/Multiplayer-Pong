@@ -2,10 +2,13 @@
 #define _ENGINE_H
 
 #include <SFML/Network.hpp>
+#include "Server.h"
 #include "Menu.h"
+#include "Ball.h"
 
 enum GameState {
-	ShowingSplash, Paused, ShowingMainMenu, ShowingMultiplayerMenu, ShowingHostMenu, ShowingJoinMenu, Playing, Exiting
+	ShowingSplash, Paused, ShowingMainMenu, ShowingMultiplayerMenu, ShowingHostMenu, ShowingJoinMenu, 
+	Playing, Singleplayer, Exiting
 };
 
 class Engine {
@@ -13,20 +16,25 @@ public:
 	Engine();
 	~Engine();
 
+	const static int SCREEN_WIDTH = 1024;
+	const static int SCREEN_HEIGHT = 768;
 
-	GameState getGameState();
-	void setGameState(GameState gameState);
+	GameState GetGameState();
+	void SetGameState(GameState gameState);
 
-	bool getExitState();
-	void exit();
+	bool GetExitState();
+	void Exit();
+
+	bool Playing();
 
 	void ShowMainMenu();
 	void ShowMultiplayerMenu();
 
-private:
-	const int SCREEN_WIDTH = 1024;
-	const int SCREEN_HEIGHT = 768;
+	void StartSingleplayer();
 
+	sf::RenderWindow& GetMainWindow();
+
+private:
 	GameState _gameState;
 
 	sf::RenderWindow _mainWindow;
@@ -36,6 +44,9 @@ private:
 	Menu* _mpMenu;
 
 	bool isExiting;
+	bool isPlaying;
+
+	Ball* ball;
 
 };
 

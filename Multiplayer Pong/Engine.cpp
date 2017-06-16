@@ -12,6 +12,7 @@ Engine::Engine()
 	_mpMenu = new Menu(_mainWindow, MenuType::Multiplayer);
 
 	isExiting = false;
+	isPlaying = false;
 
 	_gameState = GameState::ShowingMainMenu;
 }
@@ -31,6 +32,7 @@ void Engine::ShowMainMenu()
 		_gameState = Exiting;
 		break;
 	case Menu::SinglePlayer:
+		_gameState = GameState::Singleplayer;
 		break;
 	case Menu::Multiplayer:
 		_gameState = ShowingMultiplayerMenu;
@@ -58,22 +60,39 @@ void Engine::ShowMultiplayerMenu()
 	}
 }
 
-bool Engine::getExitState()
+void Engine::StartSingleplayer()
+{
+	Server server("127.0.0.1", 9000);
+	isPlaying = true;
+	ball = new Ball();
+}
+
+bool Engine::GetExitState()
 {
 	return isExiting;
 }
 
-GameState Engine::getGameState()
+GameState Engine::GetGameState()
 {
 	return _gameState;
 }
 
-void Engine::setGameState(GameState gameState)
+void Engine::SetGameState(GameState gameState)
 {
 	_gameState = gameState;
 }
 
-void Engine::exit()
+void Engine::Exit()
 {
 	isExiting = true;
+}
+
+sf::RenderWindow& Engine::GetMainWindow()
+{
+	return _mainWindow;
+}
+
+bool Engine::Playing()
+{
+	return isPlaying;
 }

@@ -5,6 +5,7 @@
 
 Server::Server(sf::IpAddress _ipAddress, unsigned int _port)
 {
+	socket.setBlocking(false);
 	std::cout << "Initializing server. . ." << std::endl;
 	if (socket.bind(_port) != sf::Socket::Done)
 		std::cout << "Binding to port " << _port << " was unsuccessful!" << std::endl;

@@ -1,13 +1,15 @@
 #include "Engine.h"
+#include "Ball.h"
 
 int main(int argc, char* argv[])
 {
 	Engine game;
 
 	//Game loop
-	while (!game.getExitState())
+	sf::Event event;
+	while (!game.GetExitState())
 	{
-		switch (game.getGameState())
+		switch (game.GetGameState())
 		{
 		case ShowingSplash:
 			break;
@@ -23,11 +25,21 @@ int main(int argc, char* argv[])
 			game.ShowMultiplayerMenu();
 			break;
 
-		case Playing:
+		case Singleplayer:
+			if (!game.Playing())
+				game.StartSingleplayer();
+			else
+			{
+				game.GetMainWindow().clear();
+				game.GetMainWindow().display();
+			}
+			game.GetMainWindow().pollEvent(event);
+			if (event.type == sf::Event::Closed)
+				game.SetGameState(GameState::Exiting);
 			break;
 		
 		case Exiting:
-			game.exit();
+			game.Exit();
 			break;
 		}
 	}

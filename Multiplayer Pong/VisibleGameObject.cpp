@@ -32,10 +32,48 @@ void VisibleGameObject::Draw(sf::RenderWindow& renderWindow)
 	}
 }
 
+void VisibleGameObject::Update(float elapsedTime)
+{
+}
+
+sf::Vector2f VisibleGameObject::GetPosition() const
+{
+	if (_isLoaded)
+	{
+		return _sprite.getPosition();
+	}
+	return sf::Vector2f();
+}
+
 void VisibleGameObject::SetPosition(float x, float y)
 {
 	if (_isLoaded)
 	{
 		_sprite.setPosition(x, y);
 	}
+}
+
+float VisibleGameObject::GetHeight() const
+{
+	return _sprite.getLocalBounds().height;
+}
+
+float VisibleGameObject::GetWidth() const
+{
+	return _sprite.getLocalBounds().width;
+}
+
+sf::Rect<float> VisibleGameObject::GetBoundingRect() const
+{
+	return _sprite.getLocalBounds();
+}
+
+sf::Sprite& VisibleGameObject::GetSprite()
+{
+	return _sprite;
+}
+
+bool VisibleGameObject::IsLoaded() const
+{
+	return _isLoaded;
 }

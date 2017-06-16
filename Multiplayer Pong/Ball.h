@@ -1,35 +1,23 @@
 #ifndef _BALL_H
 #define _BALL_H
 
-#include <SFML/Graphics.hpp>
+#include "VisualGameObject.h"
 
-class Ball
+class Ball :
+	public VisibleGameObject
 {
-private:
-	sf::Vector2f position;
-
-	sf::RectangleShape ballShape;
-
-	float xVelocity = .2f;
-	float yVelocity = .2f;
-
 public:
-	Ball(float startX, float startY);
-	
-	sf::FloatRect getPosition();
+	Ball();
+	virtual ~Ball();
+	void Update(float);
 
-	sf::RectangleShape getShape();
+private:
+	float _velocity;
+	float _angle;
+	float _elapsedTimeSinceStart;
 
-	float getXVelocity();
-
-	void reboundSides();
-
-	void reboundBotOrTop();
-
-	void hitBottom();
-
-	void update();
-
+	float LinearVelocityX(float angle);
+	float LinearVelocityY(float angle);
 };
 
 #endif
