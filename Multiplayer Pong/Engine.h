@@ -33,6 +33,7 @@ public:
 	//bool IsHost;
 	
 	void StartSingleplayer();
+	void StartMultiplayer();
 
 	sf::RenderWindow& GetMainWindow();
 

@@ -23,6 +23,10 @@ int main(int argc, char* argv[])
 
 		case ShowingMultiplayerMenu:
 			game.ShowMultiplayerMenu();
+			/*
+			if (!game.Playing() && game.isConnected)
+				game.StartMultiplayer();
+			*/
 			break;
 
 		case Singleplayer:
