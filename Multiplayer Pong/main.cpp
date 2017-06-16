@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 		case ShowingMultiplayerMenu:
 			game.ShowMultiplayerMenu();
 			/*
-			if (!game.Playing() && game.isConnected)
+			if (!game.Playing() && game.isConnected) // add isConnected?
 				game.StartMultiplayer();
 			*/
 			break;

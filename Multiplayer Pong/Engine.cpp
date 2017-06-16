@@ -58,7 +58,7 @@ void Engine::ShowMultiplayerMenu()
 		// important information like player ID and changes in score.
 		break;
 	case Menu::Join:
-		// OPen 
+		
 		break;
 	case Menu::MpCancel:
 		_gameState = ShowingMainMenu;
