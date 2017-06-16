@@ -10,7 +10,9 @@ Engine::Engine()
 
 	_mainMenu = new Menu(_mainWindow, MenuType::Main);
 	_mpMenu = new Menu(_mainWindow, MenuType::Multiplayer);
-
+	
+	//isConnected = false;
+	//int playerID;
 	isExiting = false;
 	isPlaying = false;
 
@@ -51,8 +53,12 @@ void Engine::ShowMultiplayerMenu()
 		_gameState = GameState::Exiting;
 		break;
 	case Menu::Host:
+		// Start server, then do everything else as if we are the client.
+		// The server should establish TCP connections for sending
+		// important information like player ID and changes in score.
 		break;
 	case Menu::Join:
+		
 		break;
 	case Menu::MpCancel:
 		_gameState = ShowingMainMenu;
@@ -65,6 +71,12 @@ void Engine::StartSingleplayer()
 	Server server("127.0.0.1", 9000);
 	isPlaying = true;
 	ball = new Ball();
+}
+
+void Engine::StartMultiplayer()
+{
+	// Get player ID
+	// 
 }
 
 bool Engine::GetExitState()

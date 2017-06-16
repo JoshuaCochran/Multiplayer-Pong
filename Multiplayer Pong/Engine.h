@@ -26,11 +26,14 @@ public:
 	void Exit();
 
 	bool Playing();
-
+	
 	void ShowMainMenu();
 	void ShowMultiplayerMenu();
-
+	
+	//bool IsHost;
+	
 	void StartSingleplayer();
+	void StartMultiplayer();
 
 	sf::RenderWindow& GetMainWindow();
 
