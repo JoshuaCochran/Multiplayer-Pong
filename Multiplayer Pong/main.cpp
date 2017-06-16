@@ -4,7 +4,7 @@
 int main(int argc, char* argv[])
 {
 	Engine game;
-
+	// Test
 	//Game loop
 	sf::Event event;
 	while (!game.GetExitState())
