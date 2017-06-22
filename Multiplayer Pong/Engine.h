@@ -2,9 +2,13 @@
 #define _ENGINE_H
 
 #include <SFML/Network.hpp>
+#include <SFML/System/Clock.hpp>
 #include "Server.h"
 #include "Menu.h"
 #include "Ball.h"
+#include "PlayderPaddle.h"
+#include "GameObjectManager.h"
+
 
 enum GameState {
 	ShowingSplash, Paused, ShowingMainMenu, ShowingMultiplayerMenu, ShowingHostMenu, ShowingJoinMenu, 
@@ -32,7 +36,16 @@ public:
 
 	void StartSingleplayer();
 
+	sf::Time GetFrameTime();
+	sf::Time GetGameTime();
+	sf::Time ResetFrameTime();
+
 	sf::RenderWindow& GetMainWindow();
+
+	GameObjectManager* GetGameObjectManager();
+
+	Ball* GetBall();
+	PlayerPaddle* GetPlayerPaddle();
 
 private:
 	GameState _gameState;
@@ -43,10 +56,16 @@ private:
 	Menu* _mainMenu;
 	Menu* _mpMenu;
 
+	GameObjectManager* _gameObjectManager;
+
 	bool isExiting;
 	bool isPlaying;
 
 	Ball* ball;
+	PlayerPaddle* playerPaddle;
+
+	sf::Clock frameTime;
+	sf::Clock gameTime;
 
 };
 

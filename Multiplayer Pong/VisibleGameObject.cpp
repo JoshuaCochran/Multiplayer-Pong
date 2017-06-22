@@ -32,7 +32,11 @@ void VisibleGameObject::Draw(sf::RenderWindow& renderWindow)
 	}
 }
 
-void VisibleGameObject::Update(float elapsedTime)
+void VisibleGameObject::Update(sf::Time elapsedTime)
+{
+}
+
+void VisibleGameObject::Update(sf::Time elapsedTime, ObjectPacket packet)
 {
 }
 

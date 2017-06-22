@@ -1,5 +1,4 @@
 #include "GameObjectManager.h"
-#include "Engine.h"
 
 GameObjectManager::GameObjectManager()
 {
@@ -52,14 +51,25 @@ void GameObjectManager::DrawAll(sf::RenderWindow& renderWindow)
 }
 
 //In progress
-/*void GameObjectManager::UpdateAll(sf::RenderWindow& mainWindow)
+void GameObjectManager::UpdateAll(sf::Time frameTime)
 {
 	std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
-	float timeDelta = mainWindow.GetFrameTime();
 
 	while (itr != _gameObjects.end())
 	{
-		itr->second->Update(timeDelta);
+		itr->second->Update(frameTime);
 		itr++;
 	}
-*/
+}
+
+void GameObjectManager::UpdateAll(sf::Time frameTime, ObjectPacket packet)
+{
+	std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
+
+	while (itr != _gameObjects.end())
+	{
+		itr->second->Update(frameTime, packet);
+		itr++;
+	}
+
+}

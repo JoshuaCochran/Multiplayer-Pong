@@ -2,6 +2,7 @@
 #define _VISIBLEGAMEOBJECT_H
 
 #include <SFML/Graphics.hpp>
+#include "Server.h"
 
 class VisibleGameObject
 {
@@ -11,7 +12,8 @@ public:
 
 	virtual void Load(std::string filename);
 	virtual void Draw(sf::RenderWindow& window);
-	virtual void Update(float elapsedTime);
+	virtual void Update(sf::Time elapsedTime);
+	virtual void Update(sf::Time elapsedTime, ObjectPacket packet);
 
 	virtual void SetPosition(float x, float y);
 	virtual sf::Vector2f GetPosition() const;

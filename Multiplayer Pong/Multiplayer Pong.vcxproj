@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>F:\Libraries\SFML-2.4.2\include;H:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\include;$(IncludePath)</IncludePath>
-    <LibraryPath>F:\Libraries\SFML-2.4.2\lib;H:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>F:\Libraries\TGUI-0.7\include;F:\Libraries\SFML-2.4.2\include;H:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\include;$(IncludePath)</IncludePath>
+    <LibraryPath>F:\Libraries\TGUI-0.7\lib;F:\Libraries\SFML-2.4.2\lib;H:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.24930\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -91,12 +91,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>F:\Libraries\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\Libraries\TGUI-0.7\include;F:\Libraries\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-main-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>F:\Libraries\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-main-d.lib;sfml-audio-d.lib;tgui-d.lib;tgui-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\Libraries\TGUI-0.7\lib;F:\Libraries\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,8 +147,10 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="PlayerPaddle.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="VisibleGameObject.cpp" />
   </ItemGroup>
@@ -157,6 +159,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="PlayderPaddle.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="VisualGameObject.h" />
   </ItemGroup>

@@ -9,7 +9,11 @@ class Ball :
 public:
 	Ball();
 	virtual ~Ball();
-	void Update(float);
+	void Update(sf::Time elapsedTime);
+	void Update(sf::Time elapsedTime, ObjectPacket packet);
+
+	float GetVelocity() const;
+	float GetAngle() const;
 
 private:
 	float _velocity;

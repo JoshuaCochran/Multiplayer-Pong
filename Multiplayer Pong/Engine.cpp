@@ -11,6 +11,10 @@ Engine::Engine()
 	_mainMenu = new Menu(_mainWindow, MenuType::Main);
 	_mpMenu = new Menu(_mainWindow, MenuType::Multiplayer);
 
+	_gameObjectManager = new GameObjectManager();
+
+	frameTime.restart();
+
 	isExiting = false;
 	isPlaying = false;
 
@@ -62,9 +66,16 @@ void Engine::ShowMultiplayerMenu()
 
 void Engine::StartSingleplayer()
 {
-	Server server("127.0.0.1", 9000);
+	//Server server("127.0.0.1", 9000, true);
 	isPlaying = true;
+	
 	ball = new Ball();
+	playerPaddle = new PlayerPaddle();
+
+	_gameObjectManager->Add("ball", ball);
+	_gameObjectManager->Add("player paddle", playerPaddle);
+
+	gameTime.restart();
 }
 
 bool Engine::GetExitState()
@@ -95,4 +106,34 @@ sf::RenderWindow& Engine::GetMainWindow()
 bool Engine::Playing()
 {
 	return isPlaying;
+}
+
+sf::Time Engine::GetFrameTime()
+{
+	return frameTime.restart();//.getElapsedTime();
+}
+
+sf::Time Engine::ResetFrameTime()
+{
+	return frameTime.restart();
+}
+
+sf::Time Engine::GetGameTime()
+{
+	return gameTime.getElapsedTime();
+}
+
+GameObjectManager* Engine::GetGameObjectManager()
+{
+	return _gameObjectManager;
+}
+
+Ball* Engine::GetBall()
+{
+	return ball;
+}
+
+PlayerPaddle* Engine::GetPlayerPaddle()
+{
+	return playerPaddle;
 }
