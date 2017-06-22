@@ -5,11 +5,11 @@
 int main(int argc, char* argv[])
 {
 	Engine game;
-	// Test
-	//Game loop
 	sf::Event event;
 	Server server;
 	sf::Time frameTime;
+
+	//Game loop
 	while (!game.GetExitState())
 	{
 		switch (game.GetGameState())
