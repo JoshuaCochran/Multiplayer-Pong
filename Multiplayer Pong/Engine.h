@@ -8,7 +8,8 @@
 #include "Ball.h"
 #include "PlayderPaddle.h"
 #include "GameObjectManager.h"
-
+#include "EnemyPaddle.h"
+#include "GUI.h"
 
 enum GameState {
 	ShowingSplash, Paused, ShowingMainMenu, ShowingMultiplayerMenu, ShowingHostMenu, ShowingJoinMenu, 
@@ -33,6 +34,9 @@ public:
 
 	void ShowMainMenu();
 	void ShowMultiplayerMenu();
+	void ShowHostMenu();
+	void ShowJoinMenu();
+
 
 	void StartSingleplayer();
 
@@ -46,6 +50,9 @@ public:
 
 	Ball* GetBall();
 	PlayerPaddle* GetPlayerPaddle();
+	EnemyPaddle* GetEnemyPaddle();
+
+	Server* GetServer();
 
 private:
 	GameState _gameState;
@@ -58,14 +65,20 @@ private:
 
 	GameObjectManager* _gameObjectManager;
 
+	Server* _server;
+
 	bool isExiting;
 	bool isPlaying;
 
 	Ball* ball;
 	PlayerPaddle* playerPaddle;
+	EnemyPaddle* enemyPaddle;
 
 	sf::Clock frameTime;
 	sf::Clock gameTime;
+
+	GUI* _hostGui;
+	GUI* _joinGui;
 
 };
 

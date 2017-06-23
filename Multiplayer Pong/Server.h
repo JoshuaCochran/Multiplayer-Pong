@@ -20,6 +20,7 @@ struct ObjectPacket {
 	float connectionType; //0 for host, 1 for client
 	float velocity;
 	float angle;
+	float singlePlayer;
 };
 
 struct GamePacket {
@@ -37,7 +38,7 @@ public:
 	void Initialize(sf::IpAddress ipAddress, unsigned int port, bool host);
 
 	void sendBallPacket(float timeStamp, float velocity, float angle);
-	void sendPaddlePacket(float timeStamp, float velocity);
+	void sendPaddlePacket(float timeStamp, float velocity, bool singlePlayer);
 
 	void receivePacket();
 

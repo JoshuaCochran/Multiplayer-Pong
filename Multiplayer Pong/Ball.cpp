@@ -24,6 +24,10 @@ Ball::~Ball()
 
 void Ball::Update(sf::Time elapsedTime)
 {
+}
+
+void Ball::Update(sf::Time elapsedTime, PlayerPaddle* player1)
+{
 	_elapsedTimeSinceStart += elapsedTime.asSeconds();
 
 	float moveAmount = _velocity * elapsedTime.asSeconds();
@@ -41,6 +45,42 @@ void Ball::Update(sf::Time elapsedTime)
 		moveByX = -moveByX;
 	}
 
+	if (player1 != NULL)
+	{
+		sf::Rect<float> p1BB = player1->GetBoundingRect();
+
+		if (p1BB.intersects(GetBoundingRect()))
+		{
+			_angle = 360.0f - (_angle - 180.0f);
+			if (_angle > 360.0f)
+				_angle -= 360.0f;
+
+			moveByY = -moveByY;
+
+			// Make sure ball doesn't go inside paddle
+			if (GetBoundingRect().contains(player1->GetBoundingRect().left, player1->GetBoundingRect().top))
+				SetPosition(GetPosition().x, player1->GetBoundingRect().top - GetWidth() / 2 - 1);
+
+			float playerVelocity = player1->GetVelocity();
+
+			if (playerVelocity < 0)
+			{
+				_angle -= 20.0f;
+				if (_angle < 0)
+					_angle = 360.0f - _angle;
+			}
+			else if (playerVelocity > 0)
+			{
+				_angle += 20.0f;
+				if (_angle > 360.0f)
+					_angle = _angle - 360.0f;
+			}
+
+			_velocity += 5.0f;
+
+		}
+	}
+
 	if (GetSprite().getPosition().y >= Engine::SCREEN_HEIGHT || GetSprite().getPosition().y <= 0)
 	{
 		GetSprite().setPosition(Engine::SCREEN_WIDTH / 2, Engine::SCREEN_HEIGHT / 2);
@@ -55,10 +95,10 @@ void Ball::Update(sf::Time elapsedTime)
 		GetSprite().move(moveByX, moveByY);
 }
 
-void Ball::Update(sf::Time elapsedTime, ObjectPacket packet)
+void Ball::Update(sf::Time elapsedTime, ObjectPacket& packet, PlayerPaddle* player1)
 {
-	if (lastPacketTime < packet.timeStamp || packet.type == ObjectType::empty)
-		Update(elapsedTime);
+	if (lastPacketTime > packet.timeStamp || packet.type == ObjectType::empty)
+		Update(elapsedTime, player1);
 	else
 	{
 		_elapsedTimeSinceStart += elapsedTime.asSeconds();
@@ -86,6 +126,42 @@ void Ball::Update(sf::Time elapsedTime, ObjectPacket packet)
 			if (_angle > 260.0f && _angle < 280.0f) _angle += 20.0f;
 			if (_angle > 80.0f && _angle < 100.0f) _angle += 20.0f;
 			moveByX = -moveByX;
+		}
+
+		if (player1 != NULL)
+		{
+			sf::Rect<float> p1BB = player1->GetBoundingRect();
+
+			if (p1BB.intersects(GetBoundingRect()))
+			{
+				_angle = 360.0f - (_angle - 180.0f);
+				if (_angle > 360.0f)
+					_angle -= 360.0f;
+
+				moveByY = -moveByY;
+
+				// Make sure ball doesn't go inside paddle
+				if (GetBoundingRect().contains(player1->GetBoundingRect().left, player1->GetBoundingRect().top))
+					SetPosition(GetPosition().x, player1->GetBoundingRect().top - GetWidth() / 2 - 1);
+
+				float playerVelocity = player1->GetVelocity();
+
+				if (playerVelocity < 0)
+				{
+					_angle -= 20.0f;
+					if (_angle < 0)
+						_angle = 360.0f - _angle;
+				}
+				else if (playerVelocity > 0)
+				{
+					_angle += 20.0f;
+					if (_angle > 360.0f)
+						_angle = _angle - 360.0f;
+				}
+
+				_velocity += 5.0f;
+
+			}
 		}
 
 		if (GetSprite().getPosition().y >= Engine::SCREEN_HEIGHT || GetSprite().getPosition().y <= 0)

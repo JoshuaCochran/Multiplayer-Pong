@@ -1,7 +1,7 @@
 #ifndef _BALL_H
 #define _BALL_H
 
-#include "VisualGameObject.h"
+#include "PlayderPaddle.h"
 #include <random>
 
 class Ball :
@@ -11,7 +11,8 @@ public:
 	Ball();
 	virtual ~Ball();
 	void Update(sf::Time elapsedTime);
-	void Update(sf::Time elapsedTime, ObjectPacket packet);
+	void Update(sf::Time elapsedTime, PlayerPaddle* player1);
+	void Update(sf::Time elapsedTime, ObjectPacket& packet, PlayerPaddle* player1);
 
 	float GetVelocity() const;
 	float GetAngle() const;

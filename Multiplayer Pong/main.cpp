@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
 	Engine game;
 	sf::Event event;
-	Server server;
+	//Server server;
 	sf::Time frameTime;
 
 	//Game loop
@@ -28,24 +28,37 @@ int main(int argc, char* argv[])
 			game.ShowMultiplayerMenu();
 			break;
 
+		case ShowingHostMenu:
+			game.ShowHostMenu();
+			break;
+
+		case ShowingJoinMenu:
+			game.ShowJoinMenu();
+			break;
+
 		case Singleplayer:
 			game.GetMainWindow().pollEvent(event);
 			if (!game.Playing())
 			{
-				server.Initialize("127.0.0.1", 9000, true);
+				game.GetServer()->Initialize("127.0.0.1", 9000, true);
 				game.StartSingleplayer();
 			}
 			else
 			{
-				server.receivePacket();
+				game.GetServer()->receivePacket();
+				game.GetServer()->receivePacket();
+				game.GetServer()->receivePacket();
 
 				frameTime = game.GetFrameTime();
 
-				game.GetBall()->Update(frameTime, server.getBallPacket());
-				server.sendBallPacket(game.GetGameTime().asSeconds(), game.GetBall()->GetVelocity(), game.GetBall()->GetAngle());
-				
+				game.GetEnemyPaddle()->Update(frameTime, game.GetServer()->getPaddlePacket());
+				game.GetServer()->sendPaddlePacket(game.GetGameTime().asSeconds(), game.GetEnemyPaddle()->GetVelocity(), true);
+
 				game.GetPlayerPaddle()->Update(frameTime, event);
-				server.sendPaddlePacket(game.GetGameTime().asSeconds(), game.GetPlayerPaddle()->GetVelocity());
+				game.GetServer()->sendPaddlePacket(game.GetGameTime().asSeconds(), game.GetPlayerPaddle()->GetVelocity(), false);
+
+				game.GetBall()->Update(frameTime, game.GetServer()->getBallPacket(), game.GetPlayerPaddle());
+				game.GetServer()->sendBallPacket(game.GetGameTime().asSeconds(), game.GetBall()->GetVelocity(), game.GetBall()->GetAngle());
 
 				game.GetMainWindow().clear();
 				game.GetGameObjectManager()->DrawAll(game.GetMainWindow());

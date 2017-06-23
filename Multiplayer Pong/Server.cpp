@@ -7,13 +7,13 @@
 sf::Packet& operator <<(sf::Packet& packet, const ObjectPacket& objPacket)
 {
 	return packet << objPacket.packetNum << objPacket.timeStamp << objPacket.type << objPacket.connectionType << objPacket.velocity
-		<< objPacket.angle;
+		<< objPacket.angle << objPacket.singlePlayer;
 }
 
 sf::Packet& operator >>(sf::Packet& packet, ObjectPacket& objPacket)
 {
 	return packet >> objPacket.packetNum >> objPacket.timeStamp >> objPacket.type >> objPacket.connectionType >> objPacket.velocity
-		>> objPacket.angle;
+		>> objPacket.angle >> objPacket.singlePlayer;
 }
 
 
@@ -77,7 +77,7 @@ void Server::sendBallPacket(float timeStamp, float velocity, float angle)
 	packetsSent++;
 }
 
-void Server::sendPaddlePacket(float timeStamp, float velocity)
+void Server::sendPaddlePacket(float timeStamp, float velocity, bool singlePlayer)
 {
 	ObjectPacket pack;
 	pack.packetNum = packetsSent;
@@ -87,6 +87,11 @@ void Server::sendPaddlePacket(float timeStamp, float velocity)
 		pack.connectionType = ConnectionType::host;
 	else
 		pack.connectionType = ConnectionType::client;
+
+	if (singlePlayer)
+		pack.singlePlayer = 1;
+	else
+		pack.singlePlayer = 0;
 
 	pack.velocity = velocity;
 
@@ -122,7 +127,9 @@ void Server::receivePacket()
 		ballPackets2.push(pack);
 		std::cout << "Ball packet received.\n";
 	}
-	else if (pack.type == ObjectType::paddle)
+	else if (pack.type == ObjectType::paddle && pack.singlePlayer == 1)
+		paddlePackets2.push(pack);
+	else if (pack.type == ObjectType::paddle && pack.connectionType == ConnectionType::client)
 		paddlePackets2.push(pack);
 	else
 		std::cout << "Error: Empty packet received.\n";

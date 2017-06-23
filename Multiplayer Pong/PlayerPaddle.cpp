@@ -28,9 +28,9 @@ void PlayerPaddle::Update(sf::Time elapsedTime, sf::Event input)
 	if (input.type == sf::Event::KeyPressed || input.type == sf::Event::KeyReleased)
 	{
 		if (input.key.code == sf::Keyboard::Left)
-			_velocity -= 5.0f;
+			_velocity -= 3.0f;
 		else if (input.key.code == sf::Keyboard::Right)
-			_velocity += 5.0f;
+			_velocity += 3.0f;
 		else if (input.key.code == sf::Keyboard::Down)
 			_velocity = 0.0f;
 	}

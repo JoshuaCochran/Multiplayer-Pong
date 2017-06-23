@@ -13,6 +13,11 @@ Engine::Engine()
 
 	_gameObjectManager = new GameObjectManager();
 
+	_server = new Server;
+
+	_hostGui = new GUI(_mainWindow, _server, GUIType::hostMenu);
+	_joinGui = new GUI(_mainWindow, _server, GUIType::joinMenu);
+	
 	frameTime.restart();
 
 	isExiting = false;
@@ -55,13 +60,44 @@ void Engine::ShowMultiplayerMenu()
 		_gameState = GameState::Exiting;
 		break;
 	case Menu::Host:
+		_gameState = GameState::ShowingHostMenu;
 		break;
 	case Menu::Join:
+		_gameState = GameState::ShowingJoinMenu;
 		break;
 	case Menu::MpCancel:
 		_gameState = ShowingMainMenu;
 		break;
 	}
+}
+
+void Engine::ShowHostMenu()
+{
+	sf::Event event;
+	_mainWindow.pollEvent(event);
+	/*if (event.type == sf::Event::Resized)
+	{
+		_mainWindow.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+		_hostGui->setView(_mainWindow.getView());
+		_mainWindow.setView(_mainWindow.getDefaultView());
+	}*/
+	_hostGui->HandleEvent(event);
+
+	_mainWindow.clear();
+	_hostGui->Draw();
+	_mainWindow.display();
+}
+
+void Engine::ShowJoinMenu()
+{
+	sf::Event event;
+	_mainWindow.pollEvent(event);
+
+	_joinGui->HandleEvent(event);
+
+	_mainWindow.clear();
+	_joinGui->Draw();
+	_mainWindow.display();
 }
 
 void Engine::StartSingleplayer()
@@ -71,9 +107,11 @@ void Engine::StartSingleplayer()
 	
 	ball = new Ball();
 	playerPaddle = new PlayerPaddle();
+	enemyPaddle = new EnemyPaddle();
 
 	_gameObjectManager->Add("ball", ball);
 	_gameObjectManager->Add("player paddle", playerPaddle);
+	_gameObjectManager->Add("enemy paddle", enemyPaddle);
 
 	gameTime.restart();
 }
@@ -136,4 +174,14 @@ Ball* Engine::GetBall()
 PlayerPaddle* Engine::GetPlayerPaddle()
 {
 	return playerPaddle;
+}
+
+EnemyPaddle* Engine::GetEnemyPaddle()
+{
+	return enemyPaddle;
+}
+
+Server* Engine::GetServer()
+{
+	return _server;
 }
