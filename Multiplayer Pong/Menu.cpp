@@ -48,7 +48,7 @@ Menu::Menu(sf::RenderWindow& window, MenuType _menuType)
 		_menuItems.push_back(mpButton);
 		_menuItems.push_back(exitButton);
 	}
-	else if (menuType == MenuType::Multiplayer)
+	else if (menuType == MenuType::MultiplayerM)
 	{
 		//Load menu image from file
 		if (!image.loadFromFile("Data/Images/Menus/multiplayermenu.png"))

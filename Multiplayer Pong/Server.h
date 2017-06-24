@@ -10,7 +10,7 @@ enum ConnectionType {
 };
 
 enum ObjectType {
-	ball, paddle, empty
+	ball, paddle, handShake, ackHandShake, empty
 };
 
 struct ObjectPacket {
@@ -46,6 +46,18 @@ public:
 	ObjectPacket getPaddlePacket();
 
 	bool isHost();
+	bool hasHandShake();
+	
+	void sendHandShake();
+	void ackHandShake();
+
+	bool hasSentHandShake();
+	bool handShakeAcknowledged();
+
+	bool isConnected();
+	void Connected();
+
+	void ShakeHands();
 
 private:
 
@@ -53,7 +65,12 @@ private:
 	unsigned int port;
 	sf::IpAddress serverIp;
 
-	bool Server::host;
+	bool host;
+	bool handShake;
+	bool sentHandShake;
+	bool handShakeReceived;
+	bool connected;
+
 
 	sf::IpAddress player2 = "127.0.0.1";
 	unsigned int port2 = 9000;

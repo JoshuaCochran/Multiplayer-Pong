@@ -13,7 +13,7 @@
 
 enum GameState {
 	ShowingSplash, Paused, ShowingMainMenu, ShowingMultiplayerMenu, ShowingHostMenu, ShowingJoinMenu, 
-	Playing, Singleplayer, Exiting
+	Playing, Singleplayer, Multiplayer, Exiting
 };
 
 class Engine {
@@ -34,8 +34,8 @@ public:
 
 	void ShowMainMenu();
 	void ShowMultiplayerMenu();
-	void ShowHostMenu();
-	void ShowJoinMenu();
+	void ShowHostMenu(sf::Event event);
+	void ShowJoinMenu(sf::Event event);
 
 
 	void StartSingleplayer();

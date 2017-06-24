@@ -9,11 +9,15 @@ enum GUIType {
 	hostMenu, joinMenu
 };
 
+enum GUIState {
+	hosting, joining, nothing
+};
+
 class GUI
 {
 public:
 	GUI(sf::RenderWindow& window, Server* server, GUIType type);
-	void HandleEvent(sf::Event event);
+	GUIState HandleEvent(sf::Event event);
 	void Draw();
 
 private:
@@ -23,6 +27,7 @@ private:
 	
 
 	GUIType _type;
+	GUIState _state = GUIState::nothing;
 
 	void runHost(tgui::EditBox::Ptr ip);
 	void runJoin(tgui::EditBox::Ptr ip, tgui::EditBox::Ptr port);

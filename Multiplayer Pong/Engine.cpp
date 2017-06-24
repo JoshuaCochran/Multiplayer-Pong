@@ -9,7 +9,7 @@ Engine::Engine()
 	_view.setViewport(sf::FloatRect(0.f, 0.f, 0.75, 1.f));
 
 	_mainMenu = new Menu(_mainWindow, MenuType::Main);
-	_mpMenu = new Menu(_mainWindow, MenuType::Multiplayer);
+	_mpMenu = new Menu(_mainWindow, MenuType::MultiplayerM);
 
 	_gameObjectManager = new GameObjectManager();
 
@@ -22,6 +22,8 @@ Engine::Engine()
 
 	isExiting = false;
 	isPlaying = false;
+
+	_mainWindow.setKeyRepeatEnabled(false);
 
 	_gameState = GameState::ShowingMainMenu;
 }
@@ -71,38 +73,8 @@ void Engine::ShowMultiplayerMenu()
 	}
 }
 
-void Engine::ShowHostMenu()
-{
-	sf::Event event;
-	_mainWindow.pollEvent(event);
-	/*if (event.type == sf::Event::Resized)
-	{
-		_mainWindow.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
-		_hostGui->setView(_mainWindow.getView());
-		_mainWindow.setView(_mainWindow.getDefaultView());
-	}*/
-	_hostGui->HandleEvent(event);
-
-	_mainWindow.clear();
-	_hostGui->Draw();
-	_mainWindow.display();
-}
-
-void Engine::ShowJoinMenu()
-{
-	sf::Event event;
-	_mainWindow.pollEvent(event);
-
-	_joinGui->HandleEvent(event);
-
-	_mainWindow.clear();
-	_joinGui->Draw();
-	_mainWindow.display();
-}
-
 void Engine::StartSingleplayer()
 {
-	//Server server("127.0.0.1", 9000, true);
 	isPlaying = true;
 	
 	ball = new Ball();
@@ -114,6 +86,43 @@ void Engine::StartSingleplayer()
 	_gameObjectManager->Add("enemy paddle", enemyPaddle);
 
 	gameTime.restart();
+}
+
+void Engine::ShowJoinMenu(sf::Event event)
+{
+	GUIState state = _joinGui->HandleEvent(event);
+
+	if (state == GUIState::joining)
+	{
+		_gameState = GameState::Multiplayer;
+		StartSingleplayer();
+	}
+
+	_mainWindow.clear();
+	_joinGui->Draw();
+	_mainWindow.display();
+}
+
+void Engine::ShowHostMenu(sf::Event event)
+{
+	/*if (event.type == sf::Event::Resized)
+	{
+	_mainWindow.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+	_hostGui->setView(_mainWindow.getView());
+	_mainWindow.setView(_mainWindow.getDefaultView());
+	}*/
+
+	GUIState state = _hostGui->HandleEvent(event);
+
+	if (state == GUIState::hosting)
+	{
+		_gameState = GameState::Multiplayer;
+		StartSingleplayer();
+	}
+
+	_mainWindow.clear();
+	_hostGui->Draw();
+	_mainWindow.display();
 }
 
 bool Engine::GetExitState()

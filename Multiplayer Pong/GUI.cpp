@@ -12,9 +12,11 @@ GUI::GUI(sf::RenderWindow& window, Server* server, GUIType type)
 		loadJoinMenu();
 }
 
-void GUI::HandleEvent(sf::Event event)
+GUIState GUI::HandleEvent(sf::Event event)
 {
 	_gui->handleEvent(event);
+
+	return _state;
 }
 
 void GUI::Draw()
@@ -25,13 +27,16 @@ void GUI::Draw()
 void GUI::runHost(tgui::EditBox::Ptr ip)
 {
 	_server->Initialize(ip->getText().toAnsiString(), 9000, true);
-	std::cout << "Success\n";
+	
+	_state = GUIState::hosting;
 }
 
 void GUI::runJoin(tgui::EditBox::Ptr ip, tgui::EditBox::Ptr port)
 {
 	unsigned int _port = std::stoi(port->getText().toAnsiString(), nullptr, 0);
 	_server->Initialize(ip->getText().toAnsiString(), _port, false);
+
+	_state = GUIState::joining;
 }
 
 void GUI::loadHostMenu()
@@ -78,7 +83,7 @@ void GUI::loadJoinMenu()
 	auto windowHeight = tgui::bindHeight(*_gui);
 
 	// Create the background image (picture is of type tgui::Picture::Ptr or std::shared_widget<Picture>)
-	auto picture = tgui::Picture::create("data/images/GUI/xubuntu_bg_aluminium.jpg");
+	auto picture = tgui::Picture::create("data/images/GUI/background.png");//"data/images/GUI/xubuntu_bg_aluminium.jpg");
 	picture->setSize(tgui::bindMax(800, windowWidth), tgui::bindMax(600, windowHeight));
 	_gui->add(picture);
 

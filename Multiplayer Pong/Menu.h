@@ -5,8 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <list>
 
-enum MenuType{
-	Main, Multiplayer, Host, Join
+enum MenuType {
+	Main, MultiplayerM, Host, Join
 };
 
 class Menu

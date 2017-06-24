@@ -35,20 +35,39 @@ Server::Server(sf::IpAddress _ipAddress, unsigned int _port, bool _host)
 
 	host = _host;
 
+	handShake = false;
+	sentHandShake = false;
+
 	packetsSent = 0;
 }
 
 void Server::Initialize(sf::IpAddress _ipAddress, unsigned int _port, bool _host)
 {
-	std::cout << "Initializing server. . ." << std::endl;
-	if (socket.bind(_port) != sf::Socket::Done)
-		std::cout << "Binding to port " << _port << " was unsuccessful!" << std::endl;
-	else
-		std::cout << "Binding to port " << _port << " was successful!" << std::endl;
-
-	port = _port;
-
 	host = _host;
+
+	if (host)
+		port = _port;
+	else
+		port = _port + 1;
+
+
+	std::cout << "Initializing server. . ." << std::endl;
+	if (socket.bind(port) != sf::Socket::Done)
+		std::cout << "Binding to port " << port << " was unsuccessful!" << std::endl;
+	else
+		std::cout << "Binding to port " << port << " was successful!" << std::endl;
+
+	if (!host)
+	{
+		player2 = _ipAddress;
+		port2 = _port;
+	}
+
+	handShake = false;
+	sentHandShake = false;
+	handShakeReceived = false;
+
+	connected = false;
 
 	packetsSent = 0;
 }
@@ -82,11 +101,15 @@ void Server::sendPaddlePacket(float timeStamp, float velocity, bool singlePlayer
 	ObjectPacket pack;
 	pack.packetNum = packetsSent;
 	pack.timeStamp = timeStamp;
+	pack.type = ObjectType::paddle;
 
 	if (host)
 		pack.connectionType = ConnectionType::host;
 	else
+	{
 		pack.connectionType = ConnectionType::client;
+		std::cout << "Sent Client Paddle Packet!\n";
+	}
 
 	if (singlePlayer)
 		pack.singlePlayer = 1;
@@ -122,17 +145,31 @@ void Server::receivePacket()
 		port2 = senderPort;
 	}*/
 
-	if (pack.type == ObjectType::ball)
+	if (pack.type == ObjectType::handShake)
 	{
-		ballPackets2.push(pack);
-		std::cout << "Ball packet received.\n";
+		handShake = true;
+		player2 = sender;
+		port2 = senderPort;
 	}
-	else if (pack.type == ObjectType::paddle && pack.singlePlayer == 1)
-		paddlePackets2.push(pack);
-	else if (pack.type == ObjectType::paddle && pack.connectionType == ConnectionType::client)
-		paddlePackets2.push(pack);
-	else
-		std::cout << "Error: Empty packet received.\n";
+	else if (pack.type == ObjectType::ackHandShake && pack.connectionType == ConnectionType::host)
+	{
+		handShakeReceived = true;
+	}
+	else if (pack.type == ObjectType::ball)
+		ballPackets2.push(pack);
+	else if (pack.type == ObjectType::paddle)
+	{
+		if (pack.singlePlayer == 1)
+			paddlePackets2.push(pack);
+		else if (isHost() && pack.connectionType == ConnectionType::client)
+			paddlePackets2.push(pack);
+		else if (!isHost() && pack.connectionType == ConnectionType::host)
+			paddlePackets2.push(pack);
+	}
+
+
+	if (isHost() && pack.connectionType == ConnectionType::client && !connected)
+		connected = true;
 }
 
 ObjectPacket Server::getBallPacket()
@@ -171,6 +208,64 @@ bool Server::isHost() {
 	return host;
 }
 
+bool Server::hasHandShake()
+{
+	return handShake;
+}
+
+void Server::ShakeHands()
+{
+	handShake = true;
+}
+
+void Server::sendHandShake()
+{
+	ObjectPacket pack;
+	pack.type = ObjectType::handShake;
+	pack.connectionType = ConnectionType::client;
+
+	sf::Packet packet;
+
+	packet << pack;
+	socket.send(packet, player2, port2);
+	
+	sentHandShake = true;
+
+	packetsSent++;
+}
+
+void Server::ackHandShake()
+{
+	ObjectPacket pack;
+	pack.type = ObjectType::ackHandShake;
+	pack.connectionType = ConnectionType::host;
+
+	sf::Packet packet;
+	packet << pack;
+	socket.send(packet, player2, port2);
+
+	packetsSent++;
+}
+
+bool Server::hasSentHandShake()
+{
+	return sentHandShake;
+}
+
+bool Server::handShakeAcknowledged()
+{
+	return handShakeReceived;
+}
+
+bool Server::isConnected()
+{
+	return connected;
+}
+
+void Server::Connected()
+{
+	connected = true;
+}
 
 /*
 Packet Structure
